@@ -17,7 +17,7 @@ const Header =()=>{
 
     return <>
       <AppBar position="static"
-    sx={{  backgroundColor:"rgb(211, 47, 47)", width:"100%", 
+    sx={{  backgroundColor:"#f6f6f9", width:"100%", 
     height:"70px" , 
 }}  
     >
@@ -31,7 +31,7 @@ const Header =()=>{
     pt:"20px",pb:"20px"
   }}
 >
-      <img src="poshta.jpeg" alt="poshta" width='30px' height='30px' />
+      <img src="logo.png" alt="poshta" width='30px' height='30px' />
         </Box>
         <Box
                 sx={{
@@ -44,11 +44,11 @@ const Header =()=>{
      to='/'
          sx={{
      my: 2,
-     color: 'white',
-      borderColor: 'white',
+     color: "rgb(211, 47, 47)",
+     borderColor: "rgb(211, 47, 47)",
       "&:hover":{
         borderColor: "rgb(211, 47, 47)",
-      }
+       }
     }}>Пошук за  TTH</Button>
 
      <Button
@@ -57,8 +57,8 @@ const Header =()=>{
       to="/departments"
          sx={{
          my: 2,
-          color: 'white',
-        borderColor: 'white',
+          color: "rgb(211, 47, 47)",
+        borderColor: "rgb(211, 47, 47)",
         "&:hover":{
             borderColor: "rgb(211, 47, 47)",
           }
@@ -71,7 +71,7 @@ const Header =()=>{
                 aria-label="menu"
                 onClick={handleMenuClick}
               >
-                <MenuIcon sx={{fontSize:"40px"}}/>
+                <MenuIcon sx={{fontSize:"40px", color:"rgb(211, 47, 47)"}}/>
               </IconButton>
     </Container>
      </AppBar>

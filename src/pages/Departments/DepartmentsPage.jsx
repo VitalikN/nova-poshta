@@ -1,5 +1,12 @@
+import { Container } from "@mui/material";
+import DepartmentsSearch from "../../components/Departments/DepartmentsSearch";
+
 const DepartmentsPage =()=>{
-    return <div>DepartmentsPage</div>
+    return  <>
+    <Container>
+      <DepartmentsSearch/>
+    </Container>
+  </>
 }
 
 export default DepartmentsPage;

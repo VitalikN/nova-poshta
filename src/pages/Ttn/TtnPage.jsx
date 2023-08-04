@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import TtnSearch from "../../components/Ttn/TtnSearch";
+import { TtnList } from "../../components/Ttn/TtnList";
 
 const TtnPage =()=>{
     return(
@@ -7,6 +8,7 @@ const TtnPage =()=>{
         <>
         <Container>
           <TtnSearch />
+          <TtnList />
         </Container>
       </>
 

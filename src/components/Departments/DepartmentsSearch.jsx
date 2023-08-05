@@ -1,59 +1,134 @@
-import { Box, Button, TextField } from "@mui/material"
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const DepartmentsSearch =()=>{
-    return   <>
-    <Box
-      component="form"
-      sx={{
-        gap: 1,
-      }}
-      mt={2}
-    >
-      <TextField
-        fullWidth
-        id="query"
-        name="query"
-        label="Введіть назву населенного пункту"
-        sx={{
-            mb: '20px',
-            '& .MuiOutlinedInput-root': {
-             '&.Mui-focused fieldset': {
-               borderColor: "rgb(211, 47, 47)",
-             },},
-             '& label.Mui-focused': {
-               color: 'rgb(211, 47, 47)',
-             },
-             }}
-      />
-      <TextField
-        fullWidth
-        id="warehouseId"
-        name="warehouseId"
-        label="Введіть номер відділення"
-        sx={{
-            mb: '20px',
-            '& .MuiOutlinedInput-root': {
-             '&.Mui-focused fieldset': {
-               borderColor: "rgb(211, 47, 47)",
-             },},
-             '& label.Mui-focused': {
-               color: 'rgb(211, 47, 47)',
-             },
-             }}
-       
-      />
-      <Button
-        fullWidth
-        mb={1}
-        variant="contained"
-        color="error"
+import { Box, Button, TextField } from "@mui/material";
+import {
+  getIsLoading,
+  getPageNumber,
+} from "../../redux/departments/departments-selectors";
+import { fetchDepartments } from "../../redux/departments/departments-operations";
 
-        type="submit"
+import { useFormik } from "formik";
+import * as yup from "yup";
+
+const validationSchema = yup.object({
+  query: yup
+    .string("Введіть назву для пошуку")
+    .matches(
+      /^[\u0400-\u04FF\s]+$/,
+      "Підтримується пошук тільки українською мовою..."
+    )
+    .required(`Поле "Назва" є обов'язковим`),
+  warehouseId: yup.number("Введіть номер відділення..."),
+});
+
+const DepartmentsSearch = () => {
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector(getIsLoading);
+  const currentPage = useSelector(getPageNumber);
+
+  const [page, setPage] = useState(currentPage);
+
+  useEffect(() => {
+    setPage(currentPage);
+  }, [currentPage]);
+
+  const formik = useFormik({
+    initialValues: {
+      query: "Ужгород",
+      warehouseId: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const body = {
+        modelName: "Address",
+        calledMethod: "getWarehouses",
+        methodProperties: {
+          CityName: values.query,
+          Page: page,
+          Limit: "20",
+          Language: "UA",
+          WarehouseId: values.warehouseId,
+        },
+      };
+
+      dispatch(fetchDepartments(body));
+    },
+  });
+
+  useEffect(() => {
+    formik.submitForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  return (
+    <>
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+        sx={{
+          gap: 1,
+        }}
+        mt={2}
       >
-        Шукати
-      </Button>
-    </Box>
-  </>
-}
+        <TextField
+          fullWidth
+          id="query"
+          name="query"
+          label="Введіть назву населенного пункту"
+          value={formik.values.query}
+          onChange={formik.handleChange}
+          error={formik.touched.query && Boolean(formik.errors.query)}
+          helperText={formik.touched.query && formik.errors.query}
+          sx={{
+            mb: "20px",
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "rgb(211, 47, 47)",
+              },
+            },
+            "& label.Mui-focused": {
+              color: "rgb(211, 47, 47)",
+            },
+          }}
+        />
+        <TextField
+          fullWidth
+          id="warehouseId"
+          name="warehouseId"
+          label="Введіть номер відділення"
+          value={formik.values.warehouseId}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.warehouseId && Boolean(formik.errors.warehouseId)
+          }
+          helperText={formik.touched.warehouseId && formik.errors.warehouseId}
+          sx={{
+            mb: "20px",
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: "rgb(211, 47, 47)",
+              },
+            },
+            "& label.Mui-focused": {
+              color: "rgb(211, 47, 47)",
+            },
+          }}
+        />
+        <Button
+          fullWidth
+          mb={1}
+          variant="contained"
+          color="error"
+          type="submit"
+          disabled={isLoading}
+        >
+          Шукати
+        </Button>
+      </Box>
+    </>
+  );
+};
 
-export default DepartmentsSearch
+export default DepartmentsSearch;

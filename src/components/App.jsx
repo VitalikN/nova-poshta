@@ -1,7 +1,11 @@
+import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
-import TtnPage from "../pages/Ttn/TtnPage";
-import DepartmentsPage from "../pages/Departments/DepartmentsPage";
+
+const DepartmentsPage = lazy(() =>
+  import("../pages/Departments/DepartmentsPage")
+);
+const TtnPage = lazy(() => import("../pages/Ttn/TtnPage"));
 
 const App = () => {
   return (

@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <BrowserRouter basename="/nova-poshta">
+    <BrowserRouter basename="nova-poshta">
       <PersistGate loading={null} persistor={persistor}>
         <App />
       </PersistGate>
